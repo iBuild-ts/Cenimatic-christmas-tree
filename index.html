@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New Year 2026</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <!-- Scene 1: Christmas Tree -->
+      <section id="scene-tree" class="scene scene--active" aria-label="Christmas tree scene">
+        <div class="meteor-tree" aria-hidden="true">
+          <div class="tree-star"></div>
+          <div class="meteor-container"></div>
+        </div>
+
+        <!-- Glowing text made of particles -->
+        <div class="glow-title" id="greetingsTitle">
+          <span class="glow-letter" data-letter="S"></span>
+          <span class="glow-letter" data-letter="E"></span>
+          <span class="glow-letter" data-letter="A"></span>
+          <span class="glow-letter" data-letter="S"></span>
+          <span class="glow-letter" data-letter="O"></span>
+          <span class="glow-letter" data-letter="N"></span>
+          <span class="glow-letter" data-letter="'"></span>
+          <span class="glow-letter" data-letter="S"></span>
+          <span class="glow-spacer"></span>
+          <span class="glow-letter" data-letter="G"></span>
+          <span class="glow-letter" data-letter="R"></span>
+          <span class="glow-letter" data-letter="E"></span>
+          <span class="glow-letter" data-letter="E"></span>
+          <span class="glow-letter" data-letter="T"></span>
+          <span class="glow-letter" data-letter="I"></span>
+          <span class="glow-letter" data-letter="N"></span>
+          <span class="glow-letter" data-letter="G"></span>
+          <span class="glow-letter" data-letter="S"></span>
+        </div>
+
+        <!-- Glowing button made of color particles -->
+        <div id="enterNewYearBtn" class="glow-button" role="button" tabindex="0">
+          <div class="glow-button-bg"></div>
+          <div class="glow-button-particles"></div>
+          <div class="glow-button-text">
+            <span>E</span><span>N</span><span>T</span><span>E</span><span>R</span>
+            <span class="glow-spacer-sm"></span>
+            <span>2</span><span>0</span><span>2</span><span>6</span>
+          </div>
+          <div class="glow-button-star">✦</div>
+        </div>
+      </section>
+
+      <!-- Scene 2: New Year Reveal -->
+      <section id="scene-heart" class="scene scene--hidden" aria-label="New year scene">
+        <!-- Same meteor tree in background -->
+        <div class="meteor-tree meteor-tree-bg" aria-hidden="true">
+          <div class="tree-star"></div>
+          <div class="meteor-container" id="scene2-meteors"></div>
+        </div>
+
+        <!-- Lightning strike container -->
+        <div class="lightning-container" id="lightningContainer"></div>
+
+        <!-- Knockout reveal text -->
+        <div class="reveal-container" id="revealContainer">
+          <div class="reveal-text">
+            <div class="reveal-line" id="revealLine1">
+              <span>H</span><span>A</span><span>P</span><span>P</span><span>Y</span>
+            </div>
+            <div class="reveal-line" id="revealLine2">
+              <span>N</span><span>E</span><span>W</span>
+              <span class="reveal-spacer"></span>
+              <span>Y</span><span>E</span><span>A</span><span>R</span>
+            </div>
+            <div class="reveal-year" id="revealYear">
+              <span>2</span><span>0</span><span>2</span><span>6</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Carousel -->
+        <div class="carousel" aria-label="Photo carousel">
+          <div class="carousel-track">
+            <img src="https://picsum.photos/seed/1/400/250" class="carousel-slide active" alt="Slide 1" />
+            <img src="https://picsum.photos/seed/2/400/250" class="carousel-slide" alt="Slide 2" />
+            <img src="https://picsum.photos/seed/3/400/250" class="carousel-slide" alt="Slide 3" />
+            <img src="https://picsum.photos/seed/4/400/250" class="carousel-slide" alt="Slide 4" />
+            <img src="https://picsum.photos/seed/5/400/250" class="carousel-slide" alt="Slide 5" />
+            <img src="https://picsum.photos/seed/6/400/250" class="carousel-slide" alt="Slide 6" />
+            <img src="https://picsum.photos/seed/7/400/250" class="carousel-slide" alt="Slide 7" />
+            <img src="https://picsum.photos/seed/8/400/250" class="carousel-slide" alt="Slide 8" />
+          </div>
+          <div class="carousel-dots" aria-hidden="true"></div>
+        </div>
+      </section>
+    </div>
+
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

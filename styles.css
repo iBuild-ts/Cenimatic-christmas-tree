@@ -1,0 +1,709 @@
+:root {
+  --bg: #050510;
+  --star-yellow: #ffd760;
+  --star-gold: #ffaa00;
+  --star-orange: #ff8c42;
+  --star-pink: #ff7ac4;
+  --star-magenta: #ff2d95;
+  --star-blue: #6bd5ff;
+  --star-cyan: #00f5d4;
+  --star-green: #7dffb2;
+  --star-lime: #c8ff00;
+  --star-red: #ff6b6b;
+  --star-purple: #b388ff;
+  --star-white: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(ellipse at 50% 0%, #0f0f2a 0%, var(--bg) 60%);
+  color: #fdfdfd;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+#app {
+  width: 100%;
+  max-width: 1200px;
+  padding: 20px 16px;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scene {
+  position: relative;
+  text-align: center;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.scene--active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.scene--hidden {
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+}
+
+/* ===== METEOR CHRISTMAS TREE ===== */
+.meteor-tree {
+  position: relative;
+  width: 300px;
+  height: 420px;
+  margin: 0 auto 20px;
+}
+
+.tree-star {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 28px;
+  background: radial-gradient(circle, #fff 0%, var(--star-yellow) 30%, rgba(255, 215, 96, 0) 70%);
+  border-radius: 50%;
+  box-shadow:
+    0 0 20px 8px rgba(255, 215, 96, 0.6),
+    0 0 40px 16px rgba(255, 215, 96, 0.3),
+    0 0 60px 24px rgba(255, 215, 96, 0.15);
+  animation: starGlow 2s ease-in-out infinite;
+  z-index: 100;
+}
+
+.tree-star::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle, #fff 0%, var(--star-yellow) 50%, transparent 70%);
+  clip-path: polygon(
+    50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%,
+    50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%
+  );
+}
+
+@keyframes starGlow {
+  0%, 100% {
+    box-shadow:
+      0 0 20px 8px rgba(255, 215, 96, 0.6),
+      0 0 40px 16px rgba(255, 215, 96, 0.3),
+      0 0 60px 24px rgba(255, 215, 96, 0.15);
+    transform: translateX(-50%) scale(1);
+  }
+  50% {
+    box-shadow:
+      0 0 30px 12px rgba(255, 215, 96, 0.8),
+      0 0 50px 20px rgba(255, 215, 96, 0.4),
+      0 0 80px 32px rgba(255, 215, 96, 0.2);
+    transform: translateX(-50%) scale(1.1);
+  }
+}
+
+.meteor-container {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Meteor particle base styles */
+.meteor {
+  position: absolute;
+  width: var(--size, 4px);
+  height: var(--size, 4px);
+  border-radius: 50%;
+  background: var(--color, #fff);
+  box-shadow: 0 0 6px 2px var(--color, #fff);
+  opacity: 0;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: meteorFall var(--duration, 3s) var(--delay, 0s) infinite ease-out;
+}
+
+.meteor::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: var(--trail, 20px);
+  background: linear-gradient(to bottom, var(--color, #fff), transparent);
+  opacity: 0.6;
+  border-radius: 2px;
+}
+
+@keyframes meteorFall {
+  0% {
+    opacity: 0;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%) scale(0.5);
+  }
+  5% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    top: var(--endY, 380px);
+    left: var(--endX, 50%);
+    transform: translateX(-50%) scale(0.3);
+  }
+}
+
+/* Swirl meteors - curved paths */
+.meteor.swirl-left {
+  animation-name: meteorSwirlLeft;
+}
+
+.meteor.swirl-right {
+  animation-name: meteorSwirlRight;
+}
+
+@keyframes meteorSwirlLeft {
+  0% {
+    opacity: 0;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%) scale(0.5);
+  }
+  5% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+  25% {
+    left: calc(50% - var(--swirl, 40px));
+  }
+  50% {
+    left: calc(50% + var(--swirl, 20px) * 0.5);
+  }
+  75% {
+    left: calc(50% - var(--swirl, 60px));
+  }
+  100% {
+    opacity: 0;
+    top: var(--endY, 380px);
+    left: var(--endX, 20%);
+    transform: translateX(-50%) scale(0.3);
+  }
+}
+
+@keyframes meteorSwirlRight {
+  0% {
+    opacity: 0;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%) scale(0.5);
+  }
+  5% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+  25% {
+    left: calc(50% + var(--swirl, 40px));
+  }
+  50% {
+    left: calc(50% - var(--swirl, 20px) * 0.5);
+  }
+  75% {
+    left: calc(50% + var(--swirl, 60px));
+  }
+  100% {
+    opacity: 0;
+    top: var(--endY, 380px);
+    left: var(--endX, 80%);
+    transform: translateX(-50%) scale(0.3);
+  }
+}
+
+/* Static glow particles that form tree silhouette */
+.tree-glow-particle {
+  position: absolute;
+  width: var(--size, 3px);
+  height: var(--size, 3px);
+  border-radius: 50%;
+  background: var(--color, rgba(255, 255, 255, 0.8));
+  box-shadow: 0 0 4px 1px var(--color, rgba(255, 255, 255, 0.5));
+  left: var(--x, 50%);
+  top: var(--y, 50%);
+  transform: translate(-50%, -50%);
+  animation: particleTwinkle var(--twinkle, 2s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes particleTwinkle {
+  0%, 100% {
+    opacity: var(--minOp, 0.4);
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: var(--maxOp, 1);
+    transform: translate(-50%, -50%) scale(1.3);
+  }
+}
+
+/* ===== GLOWING TITLE (Color particles, no plain text) ===== */
+.glow-title {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+  margin: 10px 0;
+}
+
+.glow-letter {
+  position: relative;
+  width: 28px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  font-weight: 800;
+  background: linear-gradient(
+    135deg,
+    var(--star-yellow) 0%,
+    var(--star-orange) 25%,
+    var(--star-pink) 50%,
+    var(--star-magenta) 75%,
+    var(--star-purple) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 8px rgba(255, 215, 96, 0.8)) drop-shadow(0 0 16px rgba(255, 122, 196, 0.6));
+  animation: letterGlow 2s ease-in-out infinite alternate;
+}
+
+.glow-letter::before {
+  content: attr(data-letter);
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: inherit;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: blur(4px);
+  opacity: 0.7;
+}
+
+.glow-spacer {
+  width: 16px;
+}
+
+@keyframes letterGlow {
+  0% {
+    filter: drop-shadow(0 0 6px rgba(255, 215, 96, 0.6)) drop-shadow(0 0 12px rgba(255, 122, 196, 0.4));
+    transform: translateY(0);
+  }
+  100% {
+    filter: drop-shadow(0 0 12px rgba(255, 215, 96, 1)) drop-shadow(0 0 24px rgba(255, 122, 196, 0.8));
+    transform: translateY(-2px);
+  }
+}
+
+/* ===== GLOWING BUTTON (Color particles) ===== */
+.glow-button {
+  position: relative;
+  padding: 18px 40px;
+  border-radius: 50px;
+  cursor: pointer;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.glow-button-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 215, 96, 0.3) 0%,
+    rgba(255, 122, 196, 0.3) 50%,
+    rgba(107, 213, 255, 0.3) 100%
+  );
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50px;
+  backdrop-filter: blur(10px);
+}
+
+.glow-button::before {
+  content: "";
+  position: absolute;
+  inset: -100%;
+  background: conic-gradient(
+    from 0deg,
+    var(--star-yellow),
+    var(--star-orange),
+    var(--star-pink),
+    var(--star-magenta),
+    var(--star-purple),
+    var(--star-blue),
+    var(--star-cyan),
+    var(--star-green),
+    var(--star-yellow)
+  );
+  animation: spin 4s linear infinite;
+  opacity: 0.5;
+}
+
+.glow-button-particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 50px;
+}
+
+.glow-button-text {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  gap: 3px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+.glow-button-text span {
+  background: linear-gradient(
+    180deg,
+    #fff 0%,
+    var(--star-yellow) 50%,
+    var(--star-orange) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.8));
+  animation: textPulse 1.5s ease-in-out infinite;
+  animation-delay: calc(var(--i, 0) * 0.1s);
+}
+
+.glow-spacer-sm {
+  width: 12px;
+}
+
+.glow-button-star {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.4rem;
+  color: var(--star-yellow);
+  filter: drop-shadow(0 0 8px var(--star-yellow));
+  animation: starSpin 3s linear infinite;
+  z-index: 2;
+}
+
+@keyframes textPulse {
+  0%, 100% { opacity: 0.9; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-1px); }
+}
+
+@keyframes starSpin {
+  0% { transform: translateY(-50%) rotate(0deg) scale(1); }
+  50% { transform: translateY(-50%) rotate(180deg) scale(1.2); }
+  100% { transform: translateY(-50%) rotate(360deg) scale(1); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.glow-button:hover .glow-button-bg {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 215, 96, 0.5) 0%,
+    rgba(255, 122, 196, 0.5) 50%,
+    rgba(107, 213, 255, 0.5) 100%
+  );
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.glow-button:hover {
+  transform: scale(1.05);
+}
+
+.glow-button:active {
+  transform: scale(0.98);
+}
+
+/* ===== SCENE 2: METEOR TREE BACKGROUND ===== */
+.meteor-tree-bg {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%) scale(0.7);
+  opacity: 0.4;
+  z-index: 0;
+}
+
+/* ===== FIREWORKS CONTAINER ===== */
+.lightning-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  overflow: hidden;
+}
+
+/* Firework burst center */
+.firework {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--star-white);
+  box-shadow: 0 0 10px 4px var(--color, var(--star-yellow));
+  opacity: 0;
+}
+
+/* Sparks that shoot outward */
+.spark {
+  position: absolute;
+  width: 3px;
+  height: 12px;
+  border-radius: 2px;
+  background: linear-gradient(
+    to bottom,
+    var(--color, var(--star-yellow)) 0%,
+    var(--star-white) 50%,
+    transparent 100%
+  );
+  transform-origin: center bottom;
+  opacity: 0;
+  box-shadow: 0 0 6px 2px var(--color, var(--star-yellow));
+}
+
+/* Glitter particles */
+.glitter {
+  position: absolute;
+  width: var(--size, 4px);
+  height: var(--size, 4px);
+  border-radius: 50%;
+  background: var(--color, var(--star-white));
+  box-shadow: 0 0 8px 2px var(--color, var(--star-white));
+  opacity: 0;
+}
+
+/* Trailing spark effect */
+.trail {
+  position: absolute;
+  width: 2px;
+  height: 30px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    var(--color, var(--star-gold)) 30%,
+    var(--star-white) 60%,
+    transparent 100%
+  );
+  opacity: 0;
+  filter: blur(0.5px);
+}
+
+/* Screen flash for impact */
+.flash-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255, 255, 255, 0.8), transparent 60%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ===== REVEAL CONTAINER ===== */
+.reveal-container {
+  position: relative;
+  z-index: 10;
+  margin: 20px 0;
+}
+
+.reveal-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.reveal-line {
+  display: flex;
+  gap: 6px;
+}
+
+.reveal-line span,
+.reveal-year span {
+  display: inline-block;
+  font-size: 3rem;
+  font-weight: 900;
+  background: linear-gradient(
+    135deg,
+    var(--star-white) 0%,
+    var(--star-yellow) 25%,
+    var(--star-gold) 50%,
+    var(--star-orange) 75%,
+    var(--star-pink) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 10px rgba(255, 215, 96, 0.8)) drop-shadow(0 0 20px rgba(255, 170, 0, 0.6));
+  opacity: 0;
+  transform: translateY(30px) scale(0.5);
+}
+
+.reveal-spacer {
+  width: 20px;
+}
+
+.reveal-year {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.reveal-year span {
+  font-size: 4rem;
+  background: linear-gradient(
+    180deg,
+    var(--star-cyan) 0%,
+    var(--star-blue) 30%,
+    var(--star-purple) 60%,
+    var(--star-magenta) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 15px rgba(107, 213, 255, 0.9)) drop-shadow(0 0 30px rgba(179, 136, 255, 0.7));
+}
+
+#scene-heart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.carousel {
+  margin-top: 24px;
+  width: min(90%, 440px);
+  aspect-ratio: 16 / 10;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  position: relative;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.carousel::after {
+  content: "";
+  position: absolute;
+  inset: -30%;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 215, 96, 0.16), rgba(0, 0, 0, 0) 60%);
+  opacity: 0;
+  transform: rotate(0deg);
+  transition: opacity 450ms ease;
+  pointer-events: none;
+}
+
+.carousel.carousel--pulse::after {
+  opacity: 1;
+  animation: haloSpin 1.2s ease-out 1;
+}
+
+@keyframes haloSpin {
+  0% {
+    transform: rotate(0deg);
+    opacity: 0.55;
+  }
+  100% {
+    transform: rotate(180deg);
+    opacity: 0;
+  }
+}
+
+.carousel-track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.carousel-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1.02);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.carousel-slide.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.carousel-dots {
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: rgba(2, 3, 20, 0.28);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.carousel-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.2);
+}
+
+.carousel-dot.active {
+  background: rgba(255, 215, 96, 0.95);
+  box-shadow: 0 0 18px rgba(255, 215, 96, 0.75);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
