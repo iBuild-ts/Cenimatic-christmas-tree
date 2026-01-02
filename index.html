@@ -38,8 +38,26 @@
           <span class="glow-letter" data-letter="S"></span>
         </div>
 
-        <!-- Glowing button made of color particles -->
-        <div id="enterNewYearBtn" class="glow-button" role="button" tabindex="0">
+        <!-- Web3 Connect Button -->
+        <div id="connectWalletBtn" class="glow-button" role="button" tabindex="0">
+          <div class="glow-button-bg"></div>
+          <div class="glow-button-particles"></div>
+          <div class="glow-button-text" id="walletBtnText">
+            <span>C</span><span>O</span><span>N</span><span>N</span><span>E</span><span>C</span><span>T</span>
+            <span class="glow-spacer-sm"></span>
+            <span>W</span><span>A</span><span>L</span><span>L</span><span>E</span><span>T</span>
+          </div>
+          <div class="glow-button-star">🦊</div>
+        </div>
+
+        <!-- Connected wallet address display -->
+        <div id="walletAddress" class="wallet-address" style="display: none;">
+          <span class="wallet-label">Connected:</span>
+          <span class="wallet-addr" id="walletAddrText"></span>
+        </div>
+
+        <!-- Enter 2026 button (shows after wallet connect) -->
+        <div id="enterNewYearBtn" class="glow-button glow-button-secondary" role="button" tabindex="0" style="display: none;">
           <div class="glow-button-bg"></div>
           <div class="glow-button-particles"></div>
           <div class="glow-button-text">

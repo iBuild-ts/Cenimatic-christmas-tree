@@ -1,4 +1,8 @@
 const enterBtn = document.getElementById("enterNewYearBtn");
+const connectWalletBtn = document.getElementById("connectWalletBtn");
+const walletAddressDiv = document.getElementById("walletAddress");
+const walletAddrText = document.getElementById("walletAddrText");
+const walletBtnText = document.getElementById("walletBtnText");
 const sceneTree = document.getElementById("scene-tree");
 const sceneHeart = document.getElementById("scene-heart");
 
@@ -9,6 +13,129 @@ const dotsHost = document.querySelector(".carousel-dots");
 const SLIDE_INTERVAL_MS = 5000;
 let currentIndex = 0;
 let carouselTimer;
+let connectedAddress = null;
+
+// ===== WEB3 METAMASK CONNECTION =====
+function shortenAddress(address) {
+  return `${address.slice(0, 6)}...${address.slice(-4)}`;
+}
+
+async function connectMetaMask() {
+  if (typeof window.ethereum === "undefined") {
+    alert("MetaMask is not installed! Please install MetaMask to connect.");
+    return null;
+  }
+
+  try {
+    const accounts = await window.ethereum.request({
+      method: "eth_requestAccounts"
+    });
+
+    if (accounts.length > 0) {
+      connectedAddress = accounts[0];
+      return connectedAddress;
+    }
+  } catch (error) {
+    if (error.code === 4001) {
+      console.log("User rejected the connection request");
+    } else {
+      console.error("Error connecting to MetaMask:", error);
+    }
+  }
+  return null;
+}
+
+function updateWalletUI(address) {
+  if (!address) return;
+
+  // Update button text to show connected
+  if (walletBtnText) {
+    walletBtnText.innerHTML = `
+      <span>C</span><span>O</span><span>N</span><span>N</span><span>E</span><span>C</span><span>T</span><span>E</span><span>D</span>
+      <span class="glow-spacer-sm"></span>
+      <span>✓</span>
+    `;
+  }
+
+  // Show wallet address
+  if (walletAddressDiv && walletAddrText) {
+    walletAddrText.textContent = shortenAddress(address);
+    walletAddressDiv.style.display = "flex";
+
+    // Animate with GSAP
+    if (typeof gsap !== "undefined") {
+      gsap.fromTo(walletAddressDiv,
+        { opacity: 0, y: 20, scale: 0.9 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "back.out(1.7)" }
+      );
+    }
+  }
+
+  // Show Enter 2026 button
+  if (enterBtn) {
+    enterBtn.style.display = "block";
+    if (typeof gsap !== "undefined") {
+      gsap.fromTo(enterBtn,
+        { opacity: 0, y: 20, scale: 0.8 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "elastic.out(1, 0.5)", delay: 0.3 }
+      );
+    }
+  }
+
+  // Disable connect button
+  if (connectWalletBtn) {
+    connectWalletBtn.style.pointerEvents = "none";
+    connectWalletBtn.style.opacity = "0.7";
+  }
+}
+
+// Listen for account changes
+if (typeof window.ethereum !== "undefined") {
+  window.ethereum.on("accountsChanged", (accounts) => {
+    if (accounts.length > 0) {
+      connectedAddress = accounts[0];
+      if (walletAddrText) {
+        walletAddrText.textContent = shortenAddress(connectedAddress);
+      }
+    } else {
+      // Disconnected
+      connectedAddress = null;
+      if (walletAddressDiv) walletAddressDiv.style.display = "none";
+      if (enterBtn) enterBtn.style.display = "none";
+      if (connectWalletBtn) {
+        connectWalletBtn.style.pointerEvents = "auto";
+        connectWalletBtn.style.opacity = "1";
+      }
+      if (walletBtnText) {
+        walletBtnText.innerHTML = `
+          <span>C</span><span>O</span><span>N</span><span>N</span><span>E</span><span>C</span><span>T</span>
+          <span class="glow-spacer-sm"></span>
+          <span>W</span><span>A</span><span>L</span><span>L</span><span>E</span><span>T</span>
+        `;
+      }
+    }
+  });
+}
+
+// Connect wallet button click handler
+if (connectWalletBtn) {
+  connectWalletBtn.addEventListener("click", async () => {
+    const address = await connectMetaMask();
+    if (address) {
+      updateWalletUI(address);
+    }
+  });
+
+  connectWalletBtn.addEventListener("keydown", async (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      const address = await connectMetaMask();
+      if (address) {
+        updateWalletUI(address);
+      }
+    }
+  });
+}
 
 // ===== VIBRANT COLOR PALETTE =====
 const COLORS = [
